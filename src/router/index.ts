@@ -4,6 +4,28 @@ import VueRouter, { RouteConfig } from 'vue-router'
 Vue.use(VueRouter)
 
   const routes: Array<RouteConfig> = [
+    {
+      path: '/login',
+      name: 'login',
+      component: () => import(/* webpackChunkName: "Login"*/ '../Login')
+    },
+    {
+      path: '/home',
+      name: 'home',
+      component: () => import(/*webpackChunkName: Home*/ '../Home'),
+      redirect: {name: 'smokeParam'},
+      // children: [
+      //   {
+      //     path: 'smokeParam',
+      //     name: 'smokeParam',
+      //     component: () => import(/*webpackChunkName: SmokeParam */'../views/SmokeParam'),
+      //     meta: {
+      //       title: '烟气参数',
+      //       label: 'smokeParam'
+      //     }
+      //   }
+      // ]
+    }
   // {
     // path: '/about',
     // name: 'About',

@@ -4,17 +4,20 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "build": "vue-cli-service build --mode production",
     "test:unit": "vue-cli-service test:unit",
     "test:e2e": "vue-cli-service test:e2e",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
     "axios": "^0.20.0",
+    "compression-webpack-plugin": "^5.0.2",
     "core-js": "^3.6.5",
     "element-ui": "^2.13.2",
     "less": "^3.12.2",
     "less-loader": "^7.0.0",
+    "moment": "^2.27.0",
+    "moment-locales-webpack-plugin": "^1.2.0",
     "normalize.css": "^8.0.1",
     "vue": "^2.6.11",
     "vue-class-component": "^7.2.3",

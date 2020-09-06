@@ -1,12 +1,15 @@
 import { Component, Vue } from 'vue-property-decorator';
-import Login from './Login';
-import Home from './Home';
+import userApi from './apis/user';
 @Component
 export default class App extends Vue {
   render() {
-    const { userData } = this;
-    // return userData.name ? <Home /> : <Login />
-    return <Home />
+    return <router-view></router-view>
+  }
+  created() {
+    this.getUserInfo();
+  }
+  private getUserInfo() {
+    userApi.getUserInfo();
   }
   get userData() {
     return this.$store.state;
