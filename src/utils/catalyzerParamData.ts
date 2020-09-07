@@ -1,3 +1,12 @@
+export interface CatalyzerParamDatas {
+  hole: number;
+  outWallThickness: number;
+  inWallThickness: number;
+  pitch: number;
+  aperture: number;
+  openHoleRatio: number;
+  specificSurfaceArea: number;
+}
 const catalyzerParamDatas = [
   {
     hole: 11,

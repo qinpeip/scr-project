@@ -1,5 +1,5 @@
 import { Component, Vue } from 'vue-property-decorator';
-import catalyzerParamData from '../../utils/catalyzerParamData';
+import catalyzerParamData, { CatalyzerParamDatas } from '../../utils/catalyzerParamData';
 @Component
 export default class SmokeMixin extends Vue {
   scrInSmokeNum = 0;
@@ -47,6 +47,27 @@ export default class SmokeMixin extends Vue {
   catalyzerSectionSpeed = 0;
   singleCatalyzerPa = 0;
   catalyzerM3 = 0;
+  // 换算单位
+  AlternateUnits = 3600;
+  // 中间变量
+  get catalyzerArea() {
+    const { scrInSmokeNum, preCatalyzerFlow, scrDenitrationTem, AlternateUnits } = this;
+    const { openHoleRatio } = this.CurrentSelectHole as CatalyzerParamDatas;
+    const catalyzerArea = ((scrInSmokeNum * (273.15 + scrDenitrationTem) / 273.15)/
+    (openHoleRatio/100*preCatalyzerFlow*AlternateUnits))*100;
+    return Math.floor(catalyzerArea) / 100;
+  }
+  get singleModuleCatalyzerArea () {
+    const { catalyzerUnit1, catalyzerUnit2 } = this;
+    const singleModuleCatalyzerArea = ((catalyzerUnit1*160*catalyzerUnit2*160)/1000000)*100;
+    return Math.floor(singleModuleCatalyzerArea) / 100;
+  }
+  get CurrentSelectHole() {
+    const currentHole = catalyzerParamData.find(item => item.hole === this.preHoleNum);
+    return currentHole;
+  }
+
+
   get enumHole() {
     return catalyzerParamData.map(item => {
       return {

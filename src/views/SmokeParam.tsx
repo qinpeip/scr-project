@@ -123,10 +123,14 @@ export default class SmokeParam extends Mixins(SmokeMixin) {
                 <span class="field-comments">m/s</span>
               </FormItem>
               <FormItem label=" ">
-                <Button size="small" type="primary">核算</Button>
+                <Button size="small" type="primary" onClick={this.getSingleCatalyzerModuleNum}>
+                  核算
+                  {/* {this.catalyzerArea} + {this.singleModuleCatalyzerArea} */}
+                </Button>
               </FormItem>
               <FormItem label="单层催化剂模块数量:">
-                <InputNumber v-model={this.singleCatalyzerModuleNum} size="small" controls={false}/>
+                {/* <InputNumber v-model={this.singleCatalyzerModuleNum} size="small" controls={false}/> */}
+                 <div class="readonly-input-number">{this.singleCatalyzerModuleNum}</div>
                 <span class="field-comments">个</span>
               </FormItem>
             </Col>
@@ -171,7 +175,7 @@ export default class SmokeParam extends Mixins(SmokeMixin) {
           <Col span={24}>
             <Col class="bd-r-common" span={12}>
               <FormItem label="催化剂单体高度:">
-                <InputNumber v-model={this.catalyzerSingleHeight} size="small" controls={false} />
+                <InputNumber ref="catalyzerSingleHeight" v-model={this.catalyzerSingleHeight} size="small" controls={false} />
                 <span class="field-comments">mm</span>
               </FormItem>
               <FormItem label="实际催化剂孔道流度:">
@@ -221,7 +225,8 @@ export default class SmokeParam extends Mixins(SmokeMixin) {
       </Form>
     )
   }
-
-
+  getSingleCatalyzerModuleNum() {
+    this.singleCatalyzerModuleNum = Math.floor((+this.catalyzerArea / +this.singleModuleCatalyzerArea) * 100) / 100;
+  }
 
 }

@@ -1,8 +1,8 @@
 import axios from 'axios';
 import router from '@/router';
 import { Message } from 'element-ui';
-const url = 'http://127.0.0.1:8000';
-// const url = 'http://49.232.24.242';
+// const url = 'http://127.0.0.1:8000';
+const url = 'http://49.232.24.242';
 const service = axios.create({
   timeout: 5000,
   baseURL: url,
