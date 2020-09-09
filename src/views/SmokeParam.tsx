@@ -114,16 +114,18 @@ export default class SmokeParam extends Mixins(SmokeMixin) {
                 </Select>
               </FormItem>
               <FormItem label="催化剂模块单元布置:">
-                <InputNumber v-model={this.catalyzerUnit1} size="small" controls={false} style={{width: '50px'}} />
+                <InputNumber v-model={this.catalyzerUnit1} size="small" precision={0}
+                controls={false} style={{width: '50px'}} />
                 <span class="field-comments">&nbsp;&nbsp;X&nbsp;&nbsp;</span>
-                <InputNumber v-model={this.catalyzerUnit2} size="small" controls={false} style={{width: '50px'}} />
+                <InputNumber v-model={this.catalyzerUnit2} size="small" precision={0}
+                controls={false} style={{width: '50px'}} />
               </FormItem>
               <FormItem label="预设催化剂孔道流度:">
                 <InputNumber v-model={this.preCatalyzerFlow} size="small" controls={false} />
                 <span class="field-comments">m/s</span>
               </FormItem>
               <FormItem label=" ">
-                <Button size="small" type="primary" onClick={this.getSingleCatalyzerModuleNum}>
+                <Button size="small" type="primary" onClick={this.adjustAccountsHandle}>
                   核算
                   {/* {this.catalyzerArea} + {this.singleModuleCatalyzerArea} */}
                 </Button>
@@ -136,19 +138,19 @@ export default class SmokeParam extends Mixins(SmokeMixin) {
             </Col>
             <Col span={12}>
               <FormItem label="催化剂模块截面尺寸:">
-                <InputNumber v-model={this.catalyzerSectionSize1} size="small" controls={false} style={{width: '50px'}} />
-                <span class="field-comments">&nbsp;&nbsp;X&nbsp;&nbsp;</span>
-                <InputNumber v-model={this.catalyzerSectionSize2} size="small" controls={false} style={{width: '50px'}} />
+                <div class="readonly-input-number" style={{width: '100px'}}>{this.catalyzerSectionSize1}</div>
+                <span class="field-comments">&nbsp;X&nbsp;</span>
+                <div class="readonly-input-number" style={{width: '100px'}}>{this.catalyzerSectionSize2}</div>
               </FormItem>
               <FormItem label="单仓模块布置方式:">
-                <InputNumber v-model={this.singleSetMethod1} size="small" controls={false} style={{width: '50px'}} />
-                <span class="field-comments">&nbsp;&nbsp;X&nbsp;&nbsp;</span>
-                <InputNumber v-model={this.singleSetMethod2} size="small" controls={false} style={{width: '50px'}} />
+                <div class="readonly-input-number" style={{width: '100px'}}>{this.singleSetMethod1}</div>
+                <span class="field-comments">&nbsp;X&nbsp;</span>
+                <div class="readonly-input-number" style={{width: '100px'}}>{this.singleSetMethod2}</div>
               </FormItem>
               <FormItem label="单仓反应器内尺寸:">
-                <InputNumber v-model={this.singleReactorSize1} size="small" controls={false} style={{width: '50px'}} />
-                <span class="field-comments">&nbsp;&nbsp;X&nbsp;&nbsp;</span>
-                <InputNumber v-model={this.singleReactorSize2} size="small" controls={false} style={{width: '50px'}} />
+                <div class="readonly-input-number" style={{width: '100px'}}>{this.singleReactorSize1}</div>
+                <span class="field-comments">&nbsp;X&nbsp;</span>
+                <div class="readonly-input-number" style={{width: '100px'}}>{this.singleReactorSize2}</div>
               </FormItem>
               <FormItem label="预设反应器仓数:">
                 <InputNumber v-model={this.preReactorWare} size="small" />
@@ -225,8 +227,18 @@ export default class SmokeParam extends Mixins(SmokeMixin) {
       </Form>
     )
   }
-  getSingleCatalyzerModuleNum() {
-    this.singleCatalyzerModuleNum = Math.floor((+this.catalyzerArea / +this.singleModuleCatalyzerArea) * 100) / 100;
+  adjustAccountsHandle() {
+    // 核算单层催化剂模块数量
+    this.singleCatalyzerModuleNum = +(+this.catalyzerArea / +this.singleModuleCatalyzerArea).toFixed(2);
+    // 核算催化剂模块截面尺寸
+    this.catalyzerSectionSize1 = this.catalyzerUnit1 * 160;
+    this.catalyzerSectionSize2 = this.catalyzerUnit2 * 160;
+    // 核算单仓模块布置方式
+    this.singleSetMethod1 = 1;
+    this.singleSetMethod2 = this.singleLayerModuleNum;
+    // 核算单仓反应器尺寸
+    this.singleReactorSize1 = this.singleSetMethod1 * this.catalyzerSectionSize1 + 30*(this.singleSetMethod1 + 1);
+    this.singleReactorSize2 = this.singleSetMethod2 * this.catalyzerSectionSize2 + 30*(this.singleSetMethod2 + 1);
   }
 
 }

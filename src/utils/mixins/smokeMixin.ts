@@ -54,19 +54,21 @@ export default class SmokeMixin extends Vue {
     const { scrInSmokeNum, preCatalyzerFlow, scrDenitrationTem, AlternateUnits } = this;
     const { openHoleRatio } = this.CurrentSelectHole as CatalyzerParamDatas;
     const catalyzerArea = ((scrInSmokeNum * (273.15 + scrDenitrationTem) / 273.15)/
-    (openHoleRatio/100*preCatalyzerFlow*AlternateUnits))*100;
-    return Math.floor(catalyzerArea) / 100;
+    (openHoleRatio/100*preCatalyzerFlow*AlternateUnits));
+    return catalyzerArea.toFixed(2);
   }
   get singleModuleCatalyzerArea () {
     const { catalyzerUnit1, catalyzerUnit2 } = this;
-    const singleModuleCatalyzerArea = ((catalyzerUnit1*160*catalyzerUnit2*160)/1000000)*100;
-    return Math.floor(singleModuleCatalyzerArea) / 100;
+    const singleModuleCatalyzerArea = ((catalyzerUnit1*160*catalyzerUnit2*160)/1000000);
+    return singleModuleCatalyzerArea.toFixed(2);
   }
   get CurrentSelectHole() {
     const currentHole = catalyzerParamData.find(item => item.hole === this.preHoleNum);
     return currentHole;
   }
-
+  get singleLayerModuleNum() {
+    return Math.ceil(this.singleCatalyzerModuleNum);
+  }
 
   get enumHole() {
     return catalyzerParamData.map(item => {
