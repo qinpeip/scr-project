@@ -131,8 +131,8 @@ export default class SmokeParam extends Mixins(SmokeMixin) {
                 </Button>
               </FormItem>
               <FormItem label="单层催化剂模块数量:">
-                {/* <InputNumber v-model={this.singleCatalyzerModuleNum} size="small" controls={false}/> */}
-                 <div class="readonly-input-number">{this.singleCatalyzerModuleNum}</div>
+                <InputNumber v-model={this.singleCatalyzerModuleNum} size="small" controls={false}/>
+                 {/* <div class="readonly-input-number">{this.singleCatalyzerModuleNum}</div> */}
                 <span class="field-comments">个</span>
               </FormItem>
             </Col>
