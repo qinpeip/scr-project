@@ -138,19 +138,25 @@ export default class SmokeParam extends Mixins(SmokeMixin) {
             </Col>
             <Col span={12}>
               <FormItem label="催化剂模块截面尺寸:">
-                <div class="readonly-input-number" style={{width: '100px'}}>{this.catalyzerSectionSize1}</div>
+                <InputNumber v-model={this.catalyzerSectionSize1} size="small" controls={false} 
+                style={{width: '100px'}} />
                 <span class="field-comments">&nbsp;X&nbsp;</span>
-                <div class="readonly-input-number" style={{width: '100px'}}>{this.catalyzerSectionSize2}</div>
+                <InputNumber v-model={this.catalyzerSectionSize2} size="small" controls={false} 
+                style={{width: '100px'}} />
               </FormItem>
               <FormItem label="单仓模块布置方式:">
-                <div class="readonly-input-number" style={{width: '100px'}}>{this.singleSetMethod1}</div>
+                <InputNumber v-model={this.singleSetMethod1} size="small" controls={false} 
+                style={{width: '100px'}} />
                 <span class="field-comments">&nbsp;X&nbsp;</span>
-                <div class="readonly-input-number" style={{width: '100px'}}>{this.singleSetMethod2}</div>
+                <InputNumber v-model={this.singleSetMethod2} size="small" controls={false} 
+                style={{width: '100px'}} />
               </FormItem>
               <FormItem label="单仓反应器内尺寸:">
-                <div class="readonly-input-number" style={{width: '100px'}}>{this.singleReactorSize1}</div>
+                <InputNumber v-model={this.singleReactorSize1} size="small" controls={false} 
+                style={{width: '100px'}} />
                 <span class="field-comments">&nbsp;X&nbsp;</span>
-                <div class="readonly-input-number" style={{width: '100px'}}>{this.singleReactorSize2}</div>
+                <InputNumber v-model={this.singleReactorSize2} size="small" controls={false} 
+                style={{width: '100px'}} />
               </FormItem>
               <FormItem label="预设反应器仓数:">
                 <InputNumber v-model={this.preReactorWare} size="small" />
@@ -168,7 +174,7 @@ export default class SmokeParam extends Mixins(SmokeMixin) {
           </Col>
           <Col class="bd-b-common" span={24}>
             <Col class="bd-r-common" span={12} style={{textAlign: 'center', padding: '5px 0'}}>
-              <Button size="small" type="primary">计算</Button>
+              <Button size="small" type="primary" onClick={this.calculationHandle}>计算</Button>
             </Col>
             <Col span={12} style={{textAlign: 'center', padding: '5px 0'}}>
               <Button size="small" type="primary">输出</Button>
@@ -240,5 +246,21 @@ export default class SmokeParam extends Mixins(SmokeMixin) {
     this.singleReactorSize1 = this.singleSetMethod1 * this.catalyzerSectionSize1 + 30*(this.singleSetMethod1 + 1);
     this.singleReactorSize2 = this.singleSetMethod2 * this.catalyzerSectionSize2 + 30*(this.singleSetMethod2 + 1);
   }
-
+  calculationHandle() {
+    const { singleModuleCatalyzerArea, singleCatalyzerModuleNum, scrInSmokeNum, AlternateUnits,
+      preReactorWare, preReactorLayer, singleLayerModuleNum, CurrentSelectHole } = this;
+    // 根据反应器可计算出催化剂高度，根据催化剂高度进行催化剂单体高度的确定
+    // 催化剂预计用量=标况烟气量/空速
+    // 催化剂高度=催化剂预计用量/（单模块催化剂截面积*反应仓数量*单层模块数量）
+    // 催化剂单体高度=催化剂高度/催化剂层数 （实际应用应比计算值高）
+    const catalyzerPreUseNum = 0;
+    const catalyzerHeight = catalyzerPreUseNum/(+singleModuleCatalyzerArea*singleCatalyzerModuleNum*preReactorWare);
+    this.catalyzerSingleHeight = catalyzerHeight / preReactorLayer;
+    // 催化剂孔道流速= 工况烟气量/（3600*单模块催化剂截面积*开孔率*反应仓数量*单层模块数量）
+    this.realCatalyzerHoleFlow = scrInSmokeNum / (AlternateUnits*+singleModuleCatalyzerArea*preReactorWare*singleLayerModuleNum*(CurrentSelectHole.openHoleRatio/100))
+    this.realCatalyzerHoleFlow = +this.realCatalyzerHoleFlow.toFixed(2);
+    // 3）反应器截面流速
+    // 反应器截面流速= 工况烟气量/（3600*反应仓数量*反应器尺寸）
+    this.reactorSectionFlow = (scrInSmokeNum / (3600*preReactorWare))
+  }
 }

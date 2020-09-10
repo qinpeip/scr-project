@@ -64,7 +64,7 @@ export default class SmokeMixin extends Vue {
   }
   get CurrentSelectHole() {
     const currentHole = catalyzerParamData.find(item => item.hole === this.preHoleNum);
-    return currentHole;
+    return currentHole as CatalyzerParamDatas;
   }
   get singleLayerModuleNum() {
     return Math.ceil(this.singleCatalyzerModuleNum);
