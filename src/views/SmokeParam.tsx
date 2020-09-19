@@ -1,4 +1,4 @@
-import { Component, Mixins } from 'vue-property-decorator';
+import { Component, Mixins, Watch } from 'vue-property-decorator';
 import { Row, Col, Form, FormItem, InputNumber, Select, Option, Button } from 'element-ui';
 import SmokeMixin from '../utils/mixins/smokeMixin';
 @Component
@@ -9,9 +9,13 @@ export default class SmokeParam extends Mixins(SmokeMixin) {
         <Row>
           <Col class="bd-b-common" span={24}>
             <Col class="bd-r-common" span={8}>
-              <FormItem label="SCR进口烟气量:">
+              <FormItem label="工况烟气量:">
                 <InputNumber v-model={this.scrInSmokeNum} size="small" controls={false}/>
-                <span class="field-comments">Nm3/h</span>
+                <span class="field-comments">Nm <sup>3</sup>/h</span>
+              </FormItem>
+              <FormItem label="标况烟气量:">
+                <InputNumber v-model={this.biaokuangSmokeNum} size="small" controls={false}/>
+                <span class="field-comments">Nm <sup>3</sup>/h</span>
               </FormItem>
               <FormItem label="SCR脱硝温度:">
                 <InputNumber v-model={this.scrDenitrationTem} size="small" controls={false}/>
@@ -205,11 +209,11 @@ export default class SmokeParam extends Mixins(SmokeMixin) {
             </Col>
             <Col span={12}>
               <FormItem label="催化剂模块尺寸:">
-                <InputNumber v-model={this.catalyzerModuleSize1} size="small" controls={false} style={{width: '50px'}} />
-                <span class="field-comments">&nbsp;&nbsp;X&nbsp;&nbsp;</span>
-                <InputNumber v-model={this.catalyzerModuleSize2} size="small" controls={false} style={{width: '50px'}} />
-                <span class="field-comments">&nbsp;&nbsp;X&nbsp;&nbsp;</span>
-                <InputNumber v-model={this.catalyzerModuleSize3} size="small" controls={false} style={{width: '50px'}} />
+                <InputNumber v-model={this.catalyzerModuleSize1} size="small" controls={false} style={{width: '100px'}} />
+                <span class="field-comments">&nbsp;X&nbsp;</span>
+                <InputNumber v-model={this.catalyzerModuleSize2} size="small" controls={false} style={{width: '100px'}} />
+                <span class="field-comments">&nbsp;X&nbsp;</span>
+                <InputNumber v-model={this.catalyzerModuleSize3} size="small" controls={false} style={{width: '100px'}} />
               </FormItem>
               <FormItem label="氨水消耗量:">
                 <InputNumber v-model={this.ammoniaExpend} size="small" controls={false} />
@@ -233,34 +237,61 @@ export default class SmokeParam extends Mixins(SmokeMixin) {
       </Form>
     )
   }
+
+
+
+  @Watch('singleSetMethod2')
+  private onSingleSetMethod2Change(newVal: number) {
+        // 核算单仓反应器尺寸
+    this.singleReactorSize2 = this.singleSetMethod2 * this.catalyzerSectionSize2 + 30*(this.singleSetMethod2 + 1);
+  }
+  @Watch('singleSetMethod1')
+  private onSingleSetMethod1Change(newVal: number) {
+    // 核算单仓反应器尺寸
+    this.singleReactorSize1 = this.singleSetMethod1 * this.catalyzerSectionSize1 + 30*(this.singleSetMethod1 + 1);
+  }
   adjustAccountsHandle() {
+      // 标况和工况计算其中一个有值的时候计算另外一个
+      if (this.scrInSmokeNum === 0) {
+        const scrSmoke = this.biaokuangSmokeNum * ((273.15 + this.scrDenitrationTem)/273.15);
+        this.scrInSmokeNum = +scrSmoke.toFixed(2);
+      }
+      if (this.biaokuangSmokeNum === 0) {
+        const bk = this.scrInSmokeNum / ((273.15 + this.scrDenitrationTem)/273.15);
+        this.biaokuangSmokeNum = +bk.toFixed(2);
+      }
     // 核算单层催化剂模块数量
     this.singleCatalyzerModuleNum = +(+this.catalyzerArea / +this.singleModuleCatalyzerArea).toFixed(2);
     // 核算催化剂模块截面尺寸
     this.catalyzerSectionSize1 = this.catalyzerUnit1 * 160;
     this.catalyzerSectionSize2 = this.catalyzerUnit2 * 160;
     // 核算单仓模块布置方式
-    this.singleSetMethod1 = 1;
     this.singleSetMethod2 = this.singleLayerModuleNum;
-    // 核算单仓反应器尺寸
-    this.singleReactorSize1 = this.singleSetMethod1 * this.catalyzerSectionSize1 + 30*(this.singleSetMethod1 + 1);
-    this.singleReactorSize2 = this.singleSetMethod2 * this.catalyzerSectionSize2 + 30*(this.singleSetMethod2 + 1);
+    this.singleSetMethod1 = this.singleSetMethod2 - 1 > 0 ? this.singleSetMethod2 - 1 : 1;
   }
   calculationHandle() {
     const { singleModuleCatalyzerArea, singleCatalyzerModuleNum, scrInSmokeNum, AlternateUnits,
-      preReactorWare, preReactorLayer, singleLayerModuleNum, CurrentSelectHole } = this;
-    // 根据反应器可计算出催化剂高度，根据催化剂高度进行催化剂单体高度的确定
-    // 催化剂预计用量=标况烟气量/空速
-    // 催化剂高度=催化剂预计用量/（单模块催化剂截面积*反应仓数量*单层模块数量）
-    // 催化剂单体高度=催化剂高度/催化剂层数 （实际应用应比计算值高）
-    const catalyzerPreUseNum = 0;
-    const catalyzerHeight = catalyzerPreUseNum/(+singleModuleCatalyzerArea*singleCatalyzerModuleNum*preReactorWare);
-    this.catalyzerSingleHeight = catalyzerHeight / preReactorLayer;
+      preReactorWare, preReactorLayer, singleLayerModuleNum, CurrentSelectHole, singleReactorSize1, 
+      singleReactorSize2} = this;
+    //催化剂单体高度=催化剂高度/催化剂层数 （实际应用应比计算值高）
+    this.catalyzerSingleHeight = +(this.catalyzerHeight / this.preReactorLayer).toFixed(2);
     // 催化剂孔道流速= 工况烟气量/（3600*单模块催化剂截面积*开孔率*反应仓数量*单层模块数量）
     this.realCatalyzerHoleFlow = scrInSmokeNum / (AlternateUnits*+singleModuleCatalyzerArea*preReactorWare*singleLayerModuleNum*(CurrentSelectHole.openHoleRatio/100))
     this.realCatalyzerHoleFlow = +this.realCatalyzerHoleFlow.toFixed(2);
     // 3）反应器截面流速
     // 反应器截面流速= 工况烟气量/（3600*反应仓数量*反应器尺寸）
-    this.reactorSectionFlow = (scrInSmokeNum / (3600*preReactorWare))
+    this.reactorSectionFlow = +(scrInSmokeNum / (3600*preReactorWare * (singleReactorSize1 * singleReactorSize2)))
+    .toFixed(2);
+    // 催化剂体积= 单模块催化剂截面积*反应仓数量*单层模块数量*催化剂层数*单层催化剂高度
+    this.catalyzerM3 = +(singleModuleCatalyzerArea*preReactorWare*singleLayerModuleNum*preReactorLayer*
+      this.catalyzerSingleHeight).toFixed(2);
+      // 催化剂空速= 标况烟气量/催化剂体积
+      this.catalyzerEmptySpeed = +(this.biaokuangSmokeNum / this.catalyzerM3).toFixed(2);
+      // 催化剂面速度= 催化剂空速/催化剂比表面积
+      this.catalyzerSectionSpeed = +(this.catalyzerEmptySpeed*this.CurrentSelectHole.specificSurfaceArea).toFixed(2);
+      //催化剂模块尺寸= 催化剂截面尺寸*（单层催化剂高度+200）
+      this.catalyzerModuleSize1  = +((this.catalyzerSectionSize1*this.catalyzerSectionSize2*(this.catalyzerSingleHeight +200))/3).toFixed(2);
+      this.catalyzerModuleSize3 = this.catalyzerModuleSize2 = this.catalyzerModuleSize1;
+      
   }
 }

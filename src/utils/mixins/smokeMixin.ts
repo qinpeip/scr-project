@@ -3,6 +3,7 @@ import catalyzerParamData, { CatalyzerParamDatas } from '../../utils/catalyzerPa
 @Component
 export default class SmokeMixin extends Vue {
   scrInSmokeNum = 0;
+  biaokuangSmokeNum = 0;
   scrDenitrationTem = 0;
   inS0xConcentration = 0;
   inGrainConcentration = 0;
@@ -50,26 +51,41 @@ export default class SmokeMixin extends Vue {
   // 换算单位
   AlternateUnits = 3600;
   // 中间变量
-  get catalyzerArea() {
+  get catalyzerArea() { // 催化剂截面积
     const { scrInSmokeNum, preCatalyzerFlow, scrDenitrationTem, AlternateUnits } = this;
     const { openHoleRatio } = this.CurrentSelectHole as CatalyzerParamDatas;
     const catalyzerArea = ((scrInSmokeNum * (273.15 + scrDenitrationTem) / 273.15)/
     (openHoleRatio/100*preCatalyzerFlow*AlternateUnits));
     return catalyzerArea.toFixed(2);
   }
-  get singleModuleCatalyzerArea () {
+  get singleModuleCatalyzerArea () { //单模块催化剂截面积
     const { catalyzerUnit1, catalyzerUnit2 } = this;
-    const singleModuleCatalyzerArea = ((catalyzerUnit1*160*catalyzerUnit2*160)/1000000);
-    return singleModuleCatalyzerArea.toFixed(2);
+    const singleModuleCatalyzerArea = ((catalyzerUnit1*150*catalyzerUnit2*150)/1000000);
+    return +singleModuleCatalyzerArea.toFixed(2);
   }
   get CurrentSelectHole() {
     const currentHole = catalyzerParamData.find(item => item.hole === this.preHoleNum);
     return currentHole as CatalyzerParamDatas;
   }
-  get singleLayerModuleNum() {
+  get singleLayerModuleNum() { //单层催化剂模块数
     return Math.ceil(this.singleCatalyzerModuleNum);
   }
-
+  get preSpeed() { // 预设空速
+    const perSpeed = this.preCatalyzerSpeed * this.CurrentSelectHole.specificSurfaceArea;
+    return +perSpeed.toFixed(2);
+  }
+  get catalyzerPreUsed() { // 催化剂预计用量
+    return +(this.biaokuangSmokeNum / this.preSpeed).toFixed(2);
+  }
+  get catalyzerHeight() { // 催化剂高度
+    return +(this.catalyzerPreUsed/(this.singleModuleCatalyzerArea * this.preReactorWare * this.singleLayerModuleNum)).toFixed(2);
+  }
+  get lilunAmmoniaExpend() { 
+    //氨的摩尔质量计17； NOx的摩尔质量计46
+    //理论氨消耗量= 标况烟气量*（入口NOx值-出口NOx值）*氨的摩尔质量/（1000*1000*NOx的摩尔质量*氨水浓度）
+    return +(this.biaokuangSmokeNum*(this.inN0xConcentration-this.N0xOutConcentration)*17/
+    (1000*1000*16*this.ammoniaConcentration))
+  }
   get enumHole() {
     return catalyzerParamData.map(item => {
       return {
