@@ -1,5 +1,13 @@
 # scr-works
-
+## note
+```
+在新版chrome中需要禁用samesite才可以正常的联调
+在chrome输入以下网址：
+chrome://flags/
+然后搜索： 
+SameSite by default cookies
+将搜索的两条结果 disabled  就可以正常的联调了
+```
 ## Project setup
 ```
 yarn install

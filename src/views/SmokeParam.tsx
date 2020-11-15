@@ -1,6 +1,8 @@
 import { Component, Mixins, Watch } from 'vue-property-decorator';
 import { Row, Col, Form, FormItem, InputNumber, Select, Option, Button } from 'element-ui';
 import SmokeMixin from '../utils/mixins/smokeMixin';
+import service from '@/utils/service';
+import smokeParamApi from '@/apis/smokeParam';
 @Component
 export default class SmokeParam extends Mixins(SmokeMixin) {
   render() {
@@ -181,7 +183,7 @@ export default class SmokeParam extends Mixins(SmokeMixin) {
               <Button size="small" type="primary" onClick={this.calculationHandle}>计算</Button>
             </Col>
             <Col span={12} style={{textAlign: 'center', padding: '5px 0'}}>
-              <Button size="small" type="primary">输出</Button>
+              <Button size="small" type="primary" onClick={this.downloadWordFileHandle}>输出</Button>
             </Col>
           </Col>
           <Col span={24}>
@@ -293,5 +295,20 @@ export default class SmokeParam extends Mixins(SmokeMixin) {
       this.catalyzerModuleSize1  = +((this.catalyzerSectionSize1*this.catalyzerSectionSize2*(this.catalyzerSingleHeight +200))/3).toFixed(2);
       this.catalyzerModuleSize3 = this.catalyzerModuleSize2 = this.catalyzerModuleSize1;
       
+  }
+  private async downloadWordFileHandle() {
+    const params = {
+      scrInSmokeNum: this.scrInSmokeNum,
+      CurrentSelectHole: this.CurrentSelectHole,
+      preReactorLayer: this.preReactorLayer,
+      preReactorWare: this.preReactorWare,
+      cataLyzerModulesize1: this.catalyzerModuleSize1,
+      singleSetMethod1: this.singleSetMethod1,
+      singleSetMethod2: this.singleSetMethod2,
+      singleReactorSize1: this.singleReactorSize1,
+      singleReactorSize2: this.singleReactorSize2
+    }
+    await smokeParamApi.generateWordFile(params);
+    window.open(`http://127.0.0.1:8000/word/download`, '_self');
   }
 }
