@@ -309,6 +309,6 @@ export default class SmokeParam extends Mixins(SmokeMixin) {
       singleReactorSize2: this.singleReactorSize2
     }
     await smokeParamApi.generateWordFile(params);
-    window.open(`http://127.0.0.1:8000/word/download`, '_self');
+    window.open(`${location.origin}/word/download`, '_self');
   }
 }
