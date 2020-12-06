@@ -126,7 +126,7 @@ export default class SmokeParam extends Mixins(SmokeMixin) {
                 <InputNumber v-model={this.catalyzerUnit2} size="small" precision={0}
                 controls={false} style={{width: '50px'}} />
               </FormItem>
-              <FormItem label="预设催化剂孔道流度:">
+              <FormItem label="预设催化剂孔道流速:">
                 <InputNumber v-model={this.preCatalyzerFlow} size="small" controls={false} />
                 <span class="field-comments">m/s</span>
               </FormItem>
@@ -192,7 +192,7 @@ export default class SmokeParam extends Mixins(SmokeMixin) {
                 <InputNumber ref="catalyzerSingleHeight" v-model={this.catalyzerSingleHeight} size="small" controls={false} />
                 <span class="field-comments">mm</span>
               </FormItem>
-              <FormItem label="实际催化剂孔道流度:">
+              <FormItem label="实际催化剂孔道流速:">
                 <InputNumber v-model={this.realCatalyzerHoleFlow} size="small" controls={false} />
                 <span class="field-comments">m/s</span>
               </FormItem>
@@ -200,7 +200,7 @@ export default class SmokeParam extends Mixins(SmokeMixin) {
                 <InputNumber v-model={this.catalyzerDenitrationRatio} size="small" controls={false} />
                 <span class="field-comments">%</span>
               </FormItem>
-              <FormItem label="反应器截面流度:">
+              <FormItem label="反应器截面流速:">
                 <InputNumber v-model={this.reactorSectionFlow} size="small" controls={false} />
                 <span class="field-comments">m/s</span>
               </FormItem>
@@ -254,13 +254,15 @@ export default class SmokeParam extends Mixins(SmokeMixin) {
   }
   adjustAccountsHandle() {
       // 标况和工况计算其中一个有值的时候计算另外一个
+      //标况计算公式: 工况=（标况/（1-含水量））*（（273.15+脱销温度）/273.15）
       if (this.scrInSmokeNum === 0) {
-        const scrSmoke = this.biaokuangSmokeNum * ((273.15 + this.scrDenitrationTem)/273.15);
+        const scrSmoke = (this.biaokuangSmokeNum/(1-this.H20Content/100)) * ((273.15 + this.scrDenitrationTem)/273.15);
         this.scrInSmokeNum = +scrSmoke.toFixed(2);
       }
+      // 标况计算公式为：标况 = 工况/((273.15+脱销温度)/273.15)*(1-H20含量)
       if (this.biaokuangSmokeNum === 0) {
         const bk = this.scrInSmokeNum / ((273.15 + this.scrDenitrationTem)/273.15);
-        this.biaokuangSmokeNum = +bk.toFixed(2);
+        this.biaokuangSmokeNum = +(bk*(1 - this.H20Content/100)).toFixed(2);
       }
     // 核算单层催化剂模块数量
     this.singleCatalyzerModuleNum = +(+this.catalyzerArea / +this.singleModuleCatalyzerArea).toFixed(2);
@@ -268,33 +270,58 @@ export default class SmokeParam extends Mixins(SmokeMixin) {
     this.catalyzerSectionSize1 = this.catalyzerUnit1 * 160;
     this.catalyzerSectionSize2 = this.catalyzerUnit2 * 160;
     // 核算单仓模块布置方式
-    this.singleSetMethod2 = this.singleLayerModuleNum;
-    this.singleSetMethod1 = this.singleSetMethod2 - 1 > 0 ? this.singleSetMethod2 - 1 : 1;
+    this.singleSetMethod2 = Math.ceil(this.singleCatalyzerModuleNum);
+    this.singleSetMethod1 = 1;
   }
   calculationHandle() {
-    const { singleModuleCatalyzerArea, singleCatalyzerModuleNum, scrInSmokeNum, AlternateUnits,
-      preReactorWare, preReactorLayer, singleLayerModuleNum, CurrentSelectHole, singleReactorSize1, 
-      singleReactorSize2} = this;
+    const { singleModuleCatalyzerArea, singleCatalyzerModuleNum, scrInSmokeNum, AlternateUnits, scrDenitrationTem,
+      preReactorWare, preReactorLayer, CurrentSelectHole, singleReactorSize1, inN0xConcentration, 
+      singleReactorSize2, N0xOutConcentration, biaokuangSmokeNum, ammoniaConcentration, preCatalyzerFlow} = this;
     //催化剂单体高度=催化剂高度/催化剂层数 （实际应用应比计算值高）
     this.catalyzerSingleHeight = +(this.catalyzerHeight / this.preReactorLayer).toFixed(2);
     // 催化剂孔道流速= 工况烟气量/（3600*单模块催化剂截面积*开孔率*反应仓数量*单层模块数量）
-    this.realCatalyzerHoleFlow = scrInSmokeNum / (AlternateUnits*+singleModuleCatalyzerArea*preReactorWare*singleLayerModuleNum*(CurrentSelectHole.openHoleRatio/100))
+    this.realCatalyzerHoleFlow = scrInSmokeNum / (AlternateUnits*+singleModuleCatalyzerArea*preReactorWare*singleCatalyzerModuleNum*(CurrentSelectHole.openHoleRatio/100))
     this.realCatalyzerHoleFlow = +this.realCatalyzerHoleFlow.toFixed(2);
+    // 催化剂脱硝效率= （入口NOx值-出口NOx值)×100%/入口NOx值；
+    this.catalyzerDenitrationRatio = +((this.inN0xConcentration - this.otherHasNum)/this.inN0xConcentration).toFixed(2);
     // 3）反应器截面流速
     // 反应器截面流速= 工况烟气量/（3600*反应仓数量*反应器尺寸）
     this.reactorSectionFlow = +(scrInSmokeNum / (3600*preReactorWare * (singleReactorSize1 * singleReactorSize2)))
     .toFixed(2);
     // 催化剂体积= 单模块催化剂截面积*反应仓数量*单层模块数量*催化剂层数*单层催化剂高度
-    this.catalyzerM3 = +(singleModuleCatalyzerArea*preReactorWare*singleLayerModuleNum*preReactorLayer*
+    this.catalyzerM3 = +(singleModuleCatalyzerArea*preReactorWare*singleCatalyzerModuleNum*preReactorLayer*
       this.catalyzerSingleHeight).toFixed(2);
       // 催化剂空速= 标况烟气量/催化剂体积
       this.catalyzerEmptySpeed = +(this.biaokuangSmokeNum / this.catalyzerM3).toFixed(2);
       // 催化剂面速度= 催化剂空速/催化剂比表面积
       this.catalyzerSectionSpeed = +(this.catalyzerEmptySpeed*this.CurrentSelectHole.specificSurfaceArea).toFixed(2);
-      //催化剂模块尺寸= 催化剂截面尺寸*（单层催化剂高度+200）
-      this.catalyzerModuleSize1  = +((this.catalyzerSectionSize1*this.catalyzerSectionSize2*(this.catalyzerSingleHeight +200))/3).toFixed(2);
-      this.catalyzerModuleSize3 = this.catalyzerModuleSize2 = this.catalyzerModuleSize1;
-      
+      /*催化剂模块尺寸1=催化剂截面尺寸1
+      催化剂模块尺寸2=催化剂截面尺寸2
+      催化剂模块尺寸3=单层催化剂高度+200*/
+      this.catalyzerModuleSize1 = this.catalyzerSectionSize1;
+      this.catalyzerModuleSize2 = this.catalyzerSectionSize2;
+      this.catalyzerModuleSize3 = this.catalyzerHeight + 200;
+      //氨水消耗量= 标况烟气量*（入口NOx值-出口NOx值）*氨的摩尔质量/（1000*1000*NOx的摩尔质量*氨水浓度 氨的摩尔质量计17； NOx的摩尔质量计46
+      this.ammoniaExpend = biaokuangSmokeNum*(inN0xConcentration - N0xOutConcentration) * 17 /
+      (1000*1000 * 46 * ammoniaConcentration);
+      /**
+       * 烟气密度p=1.29*（273.15/（273.15+T））
+       * 烟气粘度q=（0.0000179*（288.15+110.4）/（T+273.15+110.4））* (((T+273.15)/288.15)的1.5次方)
+          雷诺数Re=o*kd_liusu*p/（q*1000）
+          阻力系数s=64/Re
+         ∆Psf =（s*（l1*1000/o））*（p*kd_liusu*kd_liusu/2）*1
+         ∆Pj =1.5*p*kd_liusu*kd_liusu/2
+          单层催化剂压降= ∆Psf + ∆pj
+          o是孔径，T是温度，kd_liusu是孔道流速，l1是单层催化剂高度
+       * 
+       */
+      const smokeDensity = +(1.29*(273.15/(273.15+scrDenitrationTem)));
+      let smokeViscoity = (0.0000179*(288.15+110.4)/(scrDenitrationTem+273.15+110.4))*(((scrDenitrationTem+273.15)/288.15)**1.5);
+      const leiNuoRe = CurrentSelectHole.pitch*preCatalyzerFlow*smokeDensity/(smokeViscoity*1000);
+      const zuLiS = 64/leiNuoRe;
+      const Psf = (zuLiS*(this.catalyzerSingleHeight*1000/CurrentSelectHole.pitch))*(smokeDensity*preCatalyzerFlow*preCatalyzerFlow/2)*1;
+      const Pj = 1.5*smokeDensity*preCatalyzerFlow*preCatalyzerFlow/2;
+      this.singleCatalyzerPa = +(Psf + Pj).toFixed(2);
   }
   private async downloadWordFileHandle() {
     const params = {
