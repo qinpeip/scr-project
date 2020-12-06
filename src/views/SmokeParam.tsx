@@ -303,7 +303,9 @@ export default class SmokeParam extends Mixins(SmokeMixin) {
       this.catalyzerModuleSize3 = this.catalyzerHeight + 200;
       //氨水消耗量= 标况烟气量*（入口NOx值-出口NOx值）*氨的摩尔质量/（1000*1000*NOx的摩尔质量*氨水浓度 氨的摩尔质量计17； NOx的摩尔质量计46
       this.ammoniaExpend = biaokuangSmokeNum*(inN0xConcentration - N0xOutConcentration) * 17 /
-      (1000*1000 * 46 * ammoniaConcentration);
+      (1000*1000 * 46 * (ammoniaConcentration/100));
+      this.ammoniaExpend = this.ammoniaExpend === Infinity ? 0 : this.ammoniaExpend;
+      this.ammoniaExpend = +this.ammoniaExpend.toFixed(2);
       /**
        * 烟气密度p=1.29*（273.15/（273.15+T））
        * 烟气粘度q=（0.0000179*（288.15+110.4）/（T+273.15+110.4））* (((T+273.15)/288.15)的1.5次方)
