@@ -283,7 +283,7 @@ export default class SmokeParam extends Mixins(SmokeMixin) {
     this.realCatalyzerHoleFlow = scrInSmokeNum / (AlternateUnits*+singleModuleCatalyzerArea*preReactorWare*singleCatalyzerModuleNum*(CurrentSelectHole.openHoleRatio/100))
     this.realCatalyzerHoleFlow = +this.realCatalyzerHoleFlow.toFixed(2);
     // 催化剂脱硝效率= （入口NOx值-出口NOx值)×100%/入口NOx值；
-    this.catalyzerDenitrationRatio = +((this.inN0xConcentration - this.otherHasNum)/this.inN0xConcentration).toFixed(2);
+    this.catalyzerDenitrationRatio = +((this.inN0xConcentration - this.N0xOutConcentration)/this.inN0xConcentration).toFixed(2);
     // 3）反应器截面流速
     // 反应器截面流速= 工况烟气量/（3600*反应仓数量*反应器尺寸）
     this.reactorSectionFlow = +(scrInSmokeNum / (3600*preReactorWare * (singleReactorSize1 * singleReactorSize2)))
