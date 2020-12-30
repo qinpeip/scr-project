@@ -52,15 +52,14 @@ export default class SmokeMixin extends Vue {
   AlternateUnits = 3600;
   // 中间变量
   get catalyzerArea() { // 催化剂截面积
-    const { biaokuangSmokeNum, preCatalyzerFlow, scrDenitrationTem, AlternateUnits } = this;
+    const { scrInSmokeNum, preCatalyzerFlow } = this;
     const { openHoleRatio } = this.CurrentSelectHole as CatalyzerParamDatas;
-    const catalyzerArea = ((biaokuangSmokeNum * (273.15 + scrDenitrationTem) / 273.15)/
-    (openHoleRatio/100*preCatalyzerFlow*AlternateUnits));
+    const catalyzerArea = scrInSmokeNum / (openHoleRatio/100*3600*preCatalyzerFlow);
     return catalyzerArea.toFixed(2);
   }
   get singleModuleCatalyzerArea () { //单模块催化剂截面积
     const { catalyzerUnit1, catalyzerUnit2 } = this;
-    const singleModuleCatalyzerArea = ((catalyzerUnit1*160*catalyzerUnit2*160)/1000000);
+    const singleModuleCatalyzerArea = ((catalyzerUnit1*150*catalyzerUnit2*150)/1000000);
     return +singleModuleCatalyzerArea.toFixed(2);
   }
   get CurrentSelectHole() {
@@ -68,6 +67,7 @@ export default class SmokeMixin extends Vue {
     return currentHole as CatalyzerParamDatas;
   }
   get preSpeed() { // 预设空速
+    console.log(this.preCatalyzerSpeed, this.CurrentSelectHole.specificSurfaceArea)
     const perSpeed = this.preCatalyzerSpeed * this.CurrentSelectHole.specificSurfaceArea;
     return +perSpeed.toFixed(2);
   }
@@ -75,7 +75,7 @@ export default class SmokeMixin extends Vue {
     return +(this.biaokuangSmokeNum / this.preSpeed).toFixed(2);
   }
   get catalyzerHeight() { // 催化剂高度
-    return +(this.catalyzerPreUsed/(this.singleModuleCatalyzerArea * this.preReactorWare * this.singleCatalyzerModuleNum)).toFixed(2);
+    return +(this.catalyzerPreUsed/(this.singleModuleCatalyzerArea * this.preReactorWare * Math.ceil(this.singleCatalyzerModuleNum))).toFixed(2);
   }
   get lilunAmmoniaExpend() { 
     //氨的摩尔质量计17； NOx的摩尔质量计46
@@ -90,5 +90,8 @@ export default class SmokeMixin extends Vue {
         label: `${item.hole} X ${item.hole}`
       }
     });
+  }
+  get catalyzerSingleHeightWidthM() { //催化剂单体高度 ====》 单位m；
+    return +(this.catalyzerSingleHeight/10000).toFixed(2);
   }
 }
