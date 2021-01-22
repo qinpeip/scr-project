@@ -17,7 +17,7 @@ export default class SmokeParam extends Mixins(SmokeMixin) {
               </FormItem>
               <FormItem label="标况烟气量:">
                 <InputNumber v-model={this.biaokuangSmokeNum} size="small" controls={false}/>
-                <span class="field-comments">Nm <sup>3</sup>/h</span>
+                <span class="field-comments">m <sup>3</sup>/h</span>
               </FormItem>
               <FormItem label="SCR脱硝温度:">
                 <InputNumber v-model={this.scrDenitrationTem} size="small" controls={false}/>
@@ -189,7 +189,7 @@ export default class SmokeParam extends Mixins(SmokeMixin) {
           <Col span={24}>
             <Col class="bd-r-common" span={12}>
               <FormItem label="催化剂单体高度:">
-                <InputNumber ref="catalyzerSingleHeight" v-model={this.catalyzerSingleHeight} size="small" controls={false} />
+                <InputNumber v-model={this.catalyzerSingleHeightView} size="small" controls={false} />
                 <span class="field-comments">mm</span>
               </FormItem>
               <FormItem label="实际催化剂孔道流速:">
@@ -280,7 +280,7 @@ export default class SmokeParam extends Mixins(SmokeMixin) {
     //催化剂单体高度=催化剂高度/催化剂层数 （实际应用应比计算值高）
     this.catalyzerSingleHeight = +(this.catalyzerHeight / this.preReactorLayer)*10000;
     // 2021-01-22修改： 单体高度除个十，然后只取整数，不要小数点后面的数
-    this.catalyzerSingleHeight = Math.round(this.catalyzerSingleHeight / 10);
+    this.catalyzerSingleHeightView = Math.round(this.catalyzerSingleHeight / 10);
     const catalyzerSingleHeightWidthM = +(this.catalyzerSingleHeight/10000).toFixed(2);
     // 催化剂孔道流速= 工况烟气量/（3600*单模块催化剂截面积*开孔率*单层模块数量）
     this.realCatalyzerHoleFlow = scrInSmokeNum / (AlternateUnits*+singleModuleCatalyzerArea*singleCatalyzerModuleNum*(CurrentSelectHole.openHoleRatio/100))
@@ -294,6 +294,7 @@ export default class SmokeParam extends Mixins(SmokeMixin) {
     // 催化剂体积= 单模块催化剂截面积*反应仓数量*单层模块数量*催化剂层数*单层催化剂高度
     this.catalyzerM3 = +(singleModuleCatalyzerArea*preReactorWare*
       singleCatalyzerModuleNum*preReactorLayer*catalyzerSingleHeightWidthM).toFixed(2);
+      console.log(catalyzerSingleHeightWidthM);
       // 催化剂空速= 标况烟气量/催化剂体积
       this.catalyzerEmptySpeed = +(this.biaokuangSmokeNum / this.catalyzerM3).toFixed(2);
       // 催化剂面速度= 催化剂空速/催化剂比表面积

@@ -37,6 +37,7 @@ export default class SmokeMixin extends Vue {
   preReactorLayer = 0;
   preCatalyzerSpeed = 0;
   catalyzerSingleHeight = 0;
+  catalyzerSingleHeightView = 0;
   realCatalyzerHoleFlow = 0;
   catalyzerDenitrationRatio = 0;
   reactorSectionFlow = 0;
