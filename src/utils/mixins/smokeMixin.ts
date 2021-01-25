@@ -75,8 +75,10 @@ export default class SmokeMixin extends Vue {
   get catalyzerPreUsed() { // 催化剂预计用量
     return +(this.biaokuangSmokeNum / this.preSpeed).toFixed(2);
   }
-  get catalyzerHeight() { // 催化剂高度
-    return +(this.catalyzerPreUsed/(this.singleModuleCatalyzerArea * this.preReactorWare * Math.ceil(this.singleCatalyzerModuleNum))).toFixed(2);
+  // 催化剂高度=催化剂预计用量/(单模块催化剂截面积*预设反应器仓数*单层催化剂模块数量);
+  // 2021-01-25修改：催化剂高度=催化剂预计用量/(单模块催化剂截面积*单层催化剂模块数量);
+  get catalyzerHeight() {
+    return +(this.catalyzerPreUsed/(this.singleModuleCatalyzerArea * Math.ceil(this.singleCatalyzerModuleNum))).toFixed(2);
   }
   get lilunAmmoniaExpend() { 
     //氨的摩尔质量计17； NOx的摩尔质量计46

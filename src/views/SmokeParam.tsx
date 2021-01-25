@@ -291,9 +291,10 @@ export default class SmokeParam extends Mixins(SmokeMixin) {
     // 反应器截面流速= 工况烟气量/（3600*反应仓数量*反应器尺寸）
     this.reactorSectionFlow = +(scrInSmokeNum / (3600*preReactorWare * (singleReactorSize1 * singleReactorSize2)/1000000))
     .toFixed(2);
-    // 催化剂体积= 单模块催化剂截面积*反应仓数量*单层模块数量*催化剂层数*单层催化剂高度
-    this.catalyzerM3 = +(singleModuleCatalyzerArea*preReactorWare*
-      singleCatalyzerModuleNum*preReactorLayer*catalyzerSingleHeightWidthM).toFixed(2);
+    // 催化剂体积= 单模块催化剂截面积*反应仓数量*单层催化剂模块数量（向上取整）*催化剂层数*单层催化剂高度
+    // 2021-01-25修改：催化剂体积= 单模块催化剂截面积*单层催化剂模块数量（向上取整）*催化剂层数*单层催化剂高度
+    this.catalyzerM3 = +(singleModuleCatalyzerArea*
+      Math.ceil(singleCatalyzerModuleNum)*preReactorLayer*catalyzerSingleHeightWidthM).toFixed(2);
       console.log(catalyzerSingleHeightWidthM);
       // 催化剂空速= 标况烟气量/催化剂体积
       this.catalyzerEmptySpeed = +(this.biaokuangSmokeNum / this.catalyzerM3).toFixed(2);
@@ -304,7 +305,7 @@ export default class SmokeParam extends Mixins(SmokeMixin) {
       催化剂模块尺寸3=单层催化剂高度+200*/
       this.catalyzerModuleSize1 = this.catalyzerSectionSize1;
       this.catalyzerModuleSize2 = this.catalyzerSectionSize2;
-      this.catalyzerModuleSize3 = this.catalyzerSingleHeight + 200;
+      this.catalyzerModuleSize3 = this.catalyzerSingleHeightView + 200;
       //氨水消耗量= 标况烟气量*（入口NOx值-出口NOx值）*氨的摩尔质量/（1000*1000*NOx的摩尔质量*氨水浓度 氨的摩尔质量计17； NOx的摩尔质量计46
       this.ammoniaExpend = biaokuangSmokeNum*(inN0xConcentration - N0xOutConcentration) * 17 /
       (1000*1000 * 46 * (ammoniaConcentration/100));
