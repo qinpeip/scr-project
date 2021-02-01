@@ -165,7 +165,9 @@ export default class SmokeParam extends Mixins(SmokeMixin) {
                 style={{width: '100px'}} />
               </FormItem>
               <FormItem label="预设反应器仓数:">
-                <InputNumber v-model={this.preReactorWare} size="small" />
+                <InputNumber v-model={this.preReactorWare} size="small" onChange={() => {
+                  this.singleSetMethod2 = Math.ceil(this.singleCatalyzerModuleNum / this.preReactorWare);
+                }} />
                 <span class="field-comments">仓</span>
               </FormItem>
               <FormItem label="预设反应器层数:">
@@ -270,7 +272,7 @@ export default class SmokeParam extends Mixins(SmokeMixin) {
     this.catalyzerSectionSize1 = this.catalyzerUnit1 * 160;
     this.catalyzerSectionSize2 = this.catalyzerUnit2 * 160;
     // 核算单仓模块布置方式
-    this.singleSetMethod2 = Math.ceil(this.singleCatalyzerModuleNum);
+    this.singleSetMethod2 = Math.ceil(this.singleCatalyzerModuleNum / this.preReactorWare);
     this.singleSetMethod1 = 1;
   }
   calculationHandle() {
