@@ -278,7 +278,8 @@ export default class SmokeParam extends Mixins(SmokeMixin) {
   calculationHandle() {
     const { singleModuleCatalyzerArea, singleCatalyzerModuleNum, scrInSmokeNum, AlternateUnits, scrDenitrationTem,
       preReactorWare, preReactorLayer, CurrentSelectHole, singleReactorSize1, inN0xConcentration,
-      singleReactorSize2, N0xOutConcentration, biaokuangSmokeNum, ammoniaConcentration, preCatalyzerFlow} = this;
+      singleReactorSize2, N0xOutConcentration, biaokuangSmokeNum, ammoniaConcentration, preCatalyzerFlow,
+    singleSetMethod1, singleSetMethod2} = this;
     //催化剂单体高度=催化剂高度/催化剂层数 （实际应用应比计算值高）
     this.catalyzerSingleHeight = +(this.catalyzerHeight / this.preReactorLayer)*10000;
     // 2021-01-22修改： 单体高度除个十，然后只取整数，不要小数点后面的数
@@ -295,9 +296,14 @@ export default class SmokeParam extends Mixins(SmokeMixin) {
     .toFixed(2);
     // 催化剂体积= 单模块催化剂截面积*反应仓数量*单层催化剂模块数量（向上取整）*催化剂层数*单层催化剂高度
     // 2021-01-25修改：催化剂体积= 单模块催化剂截面积*单层催化剂模块数量（向上取整）*催化剂层数*单层催化剂高度
-    this.catalyzerM3 = +(singleModuleCatalyzerArea*
-      Math.ceil(singleCatalyzerModuleNum)*preReactorLayer*catalyzerSingleHeightWidthM).toFixed(2);
-      console.log(catalyzerSingleHeightWidthM);
+    // 2021-02-25修改：催化剂体积=0.15*催化剂单元布置1*0.15*催化剂单元布置2*单仓模块布置方式1*单仓模块布置方式2*预设反应器层数*催化剂单体高度
+    this.catalyzerM3 = +(0.15*singleReactorSize1*0.15*singleReactorSize2*singleSetMethod1*
+      singleSetMethod2*preReactorLayer*catalyzerSingleHeightWidthM).toFixed(2);
+    
+    
+    // +(singleModuleCatalyzerArea*
+    //   Math.ceil(singleCatalyzerModuleNum)*preReactorLayer*catalyzerSingleHeightWidthM).toFixed(2);
+    //   console.log(catalyzerSingleHeightWidthM);
       // 催化剂空速= 标况烟气量/催化剂体积
       this.catalyzerEmptySpeed = +(this.biaokuangSmokeNum / this.catalyzerM3).toFixed(2);
       // 催化剂面速度= 催化剂空速/催化剂比表面积
