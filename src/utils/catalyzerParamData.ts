@@ -29,7 +29,7 @@ const catalyzerParamDatas = [
   {
     hole: 13,
     outWallThickness: 2.3,
-    inWallThickness: 1.54,
+    inWallThickness: 1.5,
     aperture:11.6,
     pitch: 10.1,
     openHoleRatio: 76,
@@ -46,102 +46,102 @@ const catalyzerParamDatas = [
   },
   {
     hole: 15,
-    outWallThickness: 2.1,
+    outWallThickness: 2.2,
     inWallThickness: 1.30,
     aperture:9.8,
     pitch: 8.5,
-    openHoleRatio: 72.14,
+    openHoleRatio: 72.25,
     specificSurfaceArea: 340
   },
   {
     hole: 16,
-    outWallThickness: 2.1,
-    inWallThickness: 1.25,
-    aperture: 9.4,
-    pitch: 8.2,
-    openHoleRatio: 76,
-    specificSurfaceArea: 372
+    outWallThickness: 2,
+    inWallThickness: 1.2,
+    aperture: 9.2,
+    pitch: 8,
+    openHoleRatio: 72.82,
+    specificSurfaceArea: 364
   },
   {
     hole: 17,
-    outWallThickness: 1.9,
+    outWallThickness: 1.8,
     inWallThickness: 1.15,
-    aperture:8.6,
+    aperture:8.65,
     pitch: 7.5,
-    openHoleRatio: 72,
+    openHoleRatio: 72.3,
     specificSurfaceArea: 385
   },
   {
     hole: 18,
-    outWallThickness: 1.9,
-    inWallThickness: 1.08,
+    outWallThickness: 1.7,
+    inWallThickness: 1.0,
     aperture: 8.2,
-    pitch: 7.1,
-    openHoleRatio: 72,
-    specificSurfaceArea: 407
+    pitch: 7.2,
+    openHoleRatio: 75.2,
+    specificSurfaceArea: 415
   },
   {
     hole: 19,
-    outWallThickness: 1.8,
-    inWallThickness: 1.03,
-    aperture:7.7,
-    pitch: 6.7,
-    openHoleRatio: 72,
-    specificSurfaceArea: 430
+    outWallThickness: 1.7,
+    inWallThickness: 1.0,
+    aperture:7.75,
+    pitch: 6.75,
+    openHoleRatio: 73.1,
+    specificSurfaceArea: 433
   },
   {
     hole: 20,
-    outWallThickness: 1.8,
-    inWallThickness: 0.98,
-    aperture: 7.3,
+    outWallThickness: 1.5,
+    inWallThickness: 1.0,
+    aperture: 7.4,
     pitch: 6.4,
-    openHoleRatio: 72,
-    specificSurfaceArea: 453
+    openHoleRatio: 73.3,
+    specificSurfaceArea: 456
   },
   {
     hole: 21,
-    outWallThickness: 1.7,
-    inWallThickness: 0.93,
-    aperture:7.0,
+    outWallThickness: 1.5,
+    inWallThickness: 0.95,
+    aperture:7.05,
     pitch: 6.1,
-    openHoleRatio: 72,
-    specificSurfaceArea: 475
+    openHoleRatio: 72.93,
+    specificSurfaceArea: 478
   },
   {
     hole: 22,
-    outWallThickness: 1.7,
-    inWallThickness: 0.86,
+    outWallThickness: 1.5,
+    inWallThickness: 0.9,
     aperture: 6.7,
     pitch: 5.8,
-    openHoleRatio: 72,
-    specificSurfaceArea: 498
+    openHoleRatio: 72.36,
+    specificSurfaceArea: 499
   },
   {
     hole: 23,
-    outWallThickness: 1.6,
+    outWallThickness: 1.5,
     inWallThickness: 0.85,
     aperture: 6.4,
-    pitch: 5.5,
-    openHoleRatio: 72,
-    specificSurfaceArea: 520
+    pitch: 5.55,
+    openHoleRatio: 72.42,
+    specificSurfaceArea: 522
   },
   {
     hole: 24,
-    outWallThickness: 1.6,
-    inWallThickness: 0.81,
-    aperture:6.1,
+    outWallThickness: 1.5,
+    inWallThickness: 0.85,
+    aperture:6.15,
     pitch: 5.3,
-    openHoleRatio: 72,
+    openHoleRatio: 71.91,
     specificSurfaceArea: 543
   },
   {
     hole: 25,
-    outWallThickness: 1.6,
-    inWallThickness: 0.78,
+    outWallThickness: 1.5,
+    inWallThickness: 0.8,
     aperture:5.9,
     pitch: 5.1,
-    openHoleRatio: 72,
-    specificSurfaceArea: 566
+    openHoleRatio: 73.2,
+    specificSurfaceArea: 569
   },
   {
     hole: 26,
@@ -163,12 +163,12 @@ const catalyzerParamDatas = [
   },
   {
     hole: 28,
-    outWallThickness: 1.70,
-    inWallThickness: 0.70,
-    aperture:5.25,
-    pitch: 4.55,
-    openHoleRatio: 72.14,
-    specificSurfaceArea: 634
+    outWallThickness: 1.3,
+    inWallThickness: 0.8,
+    aperture:5.3,
+    pitch: 4.5,
+    openHoleRatio: 70.5,
+    specificSurfaceArea: 626
   },
   {
     hole: 29,
@@ -181,12 +181,12 @@ const catalyzerParamDatas = [
   },
   {
     hole: 30,
-    outWallThickness: 1.65,
-    inWallThickness: 0.65,
-    aperture: 4.90,
-    pitch: 4.25,
-    openHoleRatio: 72.14,
-    specificSurfaceArea: 679
+    outWallThickness: 1.4,
+    inWallThickness: 0.7,
+    aperture: 4.9,
+    pitch: 4.2,
+    openHoleRatio: 71.4,
+    specificSurfaceArea: 667
   },
   {
     hole: 31,
@@ -226,12 +226,12 @@ const catalyzerParamDatas = [
   },
   {
     hole: 35,
-    outWallThickness: 1.56,
-    inWallThickness: 0.56,
-    aperture: 4.20,
-    pitch: 3.64,
-    openHoleRatio: 72.14,
-    specificSurfaceArea: 793
+    outWallThickness: 1.4,
+    inWallThickness: 0.6,
+    aperture: 4.3,
+    pitch: 3.7,
+    openHoleRatio: 69.5,
+    specificSurfaceArea: 780
   },
   {
     hole: 36,
@@ -271,12 +271,12 @@ const catalyzerParamDatas = [
   },
   {
     hole: 40,
-    outWallThickness: 1.69,
-    inWallThickness: 0.69,
-    aperture: 3.80,
-    pitch: 3.11,
+    outWallThickness: 1.4,
+    inWallThickness: 0.6,
+    aperture: 3.8,
+    pitch: 3.2,
     openHoleRatio: 68.8,
-    specificSurfaceArea: 885
+    specificSurfaceArea: 887
   },
   {
     hole: 41,
@@ -316,12 +316,12 @@ const catalyzerParamDatas = [
   },
   {
     hole: 45,
-    outWallThickness: 1.23,
-    inWallThickness: 0.43,
-    aperture: 3.27,
-    pitch: 2.83,
-    openHoleRatio: 72.14,
-    specificSurfaceArea: 1019
+    outWallThickness: 1.35,
+    inWallThickness: 0.5,
+    aperture: 3.2,
+    pitch: 2.7,
+    openHoleRatio: 65.6,
+    specificSurfaceArea: 972
   },
   {
     hole: 46,

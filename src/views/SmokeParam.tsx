@@ -284,7 +284,7 @@ export default class SmokeParam extends Mixins(SmokeMixin) {
     this.catalyzerSingleHeight = +(this.catalyzerHeight / this.preReactorLayer)*10000;
     // 2021-01-22修改： 单体高度除个十，然后只取整数，不要小数点后面的数
     this.catalyzerSingleHeightView = Math.round(this.catalyzerSingleHeight / 10);
-    const catalyzerSingleHeightWidthM = +(this.catalyzerSingleHeight/10000).toFixed(2);
+    const catalyzerSingleHeightWidthM = +(this.catalyzerSingleHeightView/1000)
     // 催化剂孔道流速= 工况烟气量/（3600*单模块催化剂截面积*开孔率*单层模块数量）
     this.realCatalyzerHoleFlow = scrInSmokeNum / (AlternateUnits*+singleModuleCatalyzerArea*singleCatalyzerModuleNum*(CurrentSelectHole.openHoleRatio/100))
     this.realCatalyzerHoleFlow = +this.realCatalyzerHoleFlow.toFixed(2);
