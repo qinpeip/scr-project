@@ -25,6 +25,7 @@ export default class CatalyzerParam extends Vue {
           <TableColumn label="孔径" prop="pitch"/>
           <TableColumn label="开孔率" prop="openHoleRatio"/>
           <TableColumn label="比表面积" prop="specificSurfaceArea"/>
+          <TableColumn label="容重(kg/m3)" prop="bulkDensity"/>
         </Table>
         <Dialog visible={this.isShowDialog} title="过滤孔数"
         on={{

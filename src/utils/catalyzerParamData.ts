@@ -6,6 +6,7 @@ export interface CatalyzerParamDatas {
   aperture: number;
   openHoleRatio: number;
   specificSurfaceArea: number;
+  bulkDensity: number;
 }
 const catalyzerParamDatas = [
   {
@@ -33,7 +34,8 @@ const catalyzerParamDatas = [
     aperture:11.6,
     pitch: 10.1,
     openHoleRatio: 76,
-    specificSurfaceArea: 302
+    specificSurfaceArea: 302,
+    bulkDensity: 380
   },
   {
     hole: 14,
@@ -51,7 +53,8 @@ const catalyzerParamDatas = [
     aperture:9.8,
     pitch: 8.5,
     openHoleRatio: 72.25,
-    specificSurfaceArea: 340
+    specificSurfaceArea: 340,
+    bulkDensity: 400
   },
   {
     hole: 16,
@@ -60,7 +63,8 @@ const catalyzerParamDatas = [
     aperture: 9.2,
     pitch: 8,
     openHoleRatio: 72.82,
-    specificSurfaceArea: 364
+    specificSurfaceArea: 364,
+    bulkDensity: 410
   },
   {
     hole: 17,
@@ -69,7 +73,8 @@ const catalyzerParamDatas = [
     aperture:8.65,
     pitch: 7.5,
     openHoleRatio: 72.3,
-    specificSurfaceArea: 385
+    specificSurfaceArea: 385,
+    bulkDensity: 420
   },
   {
     hole: 18,
@@ -78,7 +83,8 @@ const catalyzerParamDatas = [
     aperture: 8.2,
     pitch: 7.2,
     openHoleRatio: 75.2,
-    specificSurfaceArea: 415
+    specificSurfaceArea: 415,
+    bulkDensity: 420
   },
   {
     hole: 19,
@@ -87,7 +93,8 @@ const catalyzerParamDatas = [
     aperture:7.75,
     pitch: 6.75,
     openHoleRatio: 73.1,
-    specificSurfaceArea: 433
+    specificSurfaceArea: 433,
+    bulkDensity: 425
   },
   {
     hole: 20,
@@ -96,7 +103,8 @@ const catalyzerParamDatas = [
     aperture: 7.4,
     pitch: 6.4,
     openHoleRatio: 73.3,
-    specificSurfaceArea: 456
+    specificSurfaceArea: 456,
+    bulkDensity: 430
   },
   {
     hole: 21,
@@ -105,7 +113,8 @@ const catalyzerParamDatas = [
     aperture:7.05,
     pitch: 6.1,
     openHoleRatio: 72.93,
-    specificSurfaceArea: 478
+    specificSurfaceArea: 478,
+    bulkDensity: 435
   },
   {
     hole: 22,
@@ -114,7 +123,8 @@ const catalyzerParamDatas = [
     aperture: 6.7,
     pitch: 5.8,
     openHoleRatio: 72.36,
-    specificSurfaceArea: 499
+    specificSurfaceArea: 499,
+    bulkDensity: 440
   },
   {
     hole: 23,
@@ -123,7 +133,8 @@ const catalyzerParamDatas = [
     aperture: 6.4,
     pitch: 5.55,
     openHoleRatio: 72.42,
-    specificSurfaceArea: 522
+    specificSurfaceArea: 522,
+    bulkDensity: 445
   },
   {
     hole: 24,
@@ -132,7 +143,8 @@ const catalyzerParamDatas = [
     aperture:6.15,
     pitch: 5.3,
     openHoleRatio: 71.91,
-    specificSurfaceArea: 543
+    specificSurfaceArea: 543,
+    bulkDensity: 450
   },
   {
     hole: 25,
@@ -141,7 +153,8 @@ const catalyzerParamDatas = [
     aperture:5.9,
     pitch: 5.1,
     openHoleRatio: 73.2,
-    specificSurfaceArea: 569
+    specificSurfaceArea: 569,
+    bulkDensity: 455
   },
   {
     hole: 26,
@@ -168,7 +181,8 @@ const catalyzerParamDatas = [
     aperture:5.3,
     pitch: 4.5,
     openHoleRatio: 70.5,
-    specificSurfaceArea: 626
+    specificSurfaceArea: 626,
+    bulkDensity: 480
   },
   {
     hole: 29,
@@ -186,7 +200,8 @@ const catalyzerParamDatas = [
     aperture: 4.9,
     pitch: 4.2,
     openHoleRatio: 71.4,
-    specificSurfaceArea: 667
+    specificSurfaceArea: 667,
+    bulkDensity: 500
   },
   {
     hole: 31,
@@ -231,7 +246,8 @@ const catalyzerParamDatas = [
     aperture: 4.3,
     pitch: 3.7,
     openHoleRatio: 69.5,
-    specificSurfaceArea: 780
+    specificSurfaceArea: 780,
+    bulkDensity: 520
   },
   {
     hole: 36,
@@ -276,7 +292,8 @@ const catalyzerParamDatas = [
     aperture: 3.8,
     pitch: 3.2,
     openHoleRatio: 68.8,
-    specificSurfaceArea: 887
+    specificSurfaceArea: 887,
+    bulkDensity: 540
   },
   {
     hole: 41,
@@ -321,7 +338,8 @@ const catalyzerParamDatas = [
     aperture: 3.2,
     pitch: 2.7,
     openHoleRatio: 65.6,
-    specificSurfaceArea: 972
+    specificSurfaceArea: 972,
+    bulkDensity: 570
   },
   {
     hole: 46,

@@ -97,4 +97,43 @@ export default class SmokeMixin extends Vue {
   get catalyzerSingleHeightWidthM() { //催化剂单体高度 ====》 单位m；
     return +(this.catalyzerSingleHeight/10000).toFixed(2);
   }
+  get unitM3() { // 单元体积
+    return 0.15*0.15*(this.catalyzerSingleHeightView/1000);
+  }
+  get unitFaceArea() { //单元表面积
+    return this.unitM3 * this.CurrentSelectHole.specificSurfaceArea;
+  }
+  get unitWeight() { // 单元重量
+    return this.unitM3 * (this.CurrentSelectHole.bulkDensity || 0);
+  }
+  get moduleInCHJNumber() { // 模块内催化剂件数
+    return this.catalyzerUnit1 * this.catalyzerUnit2;
+  }
+  get moduleInCHJM3() { // 模块内催化剂体积
+    return this.moduleInCHJNumber * this.unitM3;
+  }
+  get moduleInCHJFaceArea() { // 模块内催化剂表面积
+    return this.moduleInCHJM3 * this.CurrentSelectHole.specificSurfaceArea;
+  }
+  get moduleInCHJWeight() { // 模块内催化剂净重
+    return this.moduleInCHJM3 * (this.CurrentSelectHole.bulkDensity || 0);
+  }
+  get totalCHJArea() { // 催化剂总面积
+    return this.catalyzerM3 * this.CurrentSelectHole.specificSurfaceArea;
+  }
+  get totalCHJWeightByNet() { // 催化剂总净重
+    return this.catalyzerM3 * this.CurrentSelectHole.bulkDensity;
+  }
+  get moduleCaseWeight() { // 模块箱重量
+    return (this.catalyzerModuleSize1/1000)*(this.catalyzerModuleSize3/1000)*0.003*7850*2+(this.catalyzerModuleSize2/1000)*(this.catalyzerModuleSize3/1000)*0.003*7850*2+(this.catalyzerModuleSize1/1000)*0.25*0.003*7850*2+(((this.catalyzerModuleSize2-20)/1000)/2)*0.05*0.006*7850*12+((this.catalyzerModuleSize1-20)/1000)*0.05*0.006*7850*24+9.4;
+  }
+  get totalModuleWeight() { // 模块总重
+    return this.moduleInCHJWeight + this.moduleCaseWeight;
+  }
+  get totalCHJWeight() { // 催化剂总重量
+    return this.totalModuleWeight * this.singleCatalyzerModuleNum;
+  }
+  get urea() {
+    return this.ammoniaExpend * this.ammoniaConcentration / 100;
+  }
 }

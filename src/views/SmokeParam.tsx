@@ -340,15 +340,46 @@ export default class SmokeParam extends Mixins(SmokeMixin) {
   }
   private async downloadWordFileHandle() {
     const params = {
-      scrInSmokeNum: this.scrInSmokeNum,
-      CurrentSelectHole: this.CurrentSelectHole,
+      biaokuangSmokeNum: this.biaokuangSmokeNum,
+      scrDenitrationTem: this.scrDenitrationTem,
+      inN0xConcentration: this.inN0xConcentration,
+      inS0xConcentration: this.inS0xConcentration,
+      inGrainConcentration: this.inGrainConcentration,
+      H20Content: this.H20Content,
+      N0xOutConcentration: this.N0xOutConcentration,
+      ammoniaExpend: this.ammoniaExpend,
+      holeNumber: this.CurrentSelectHole.hole,
+      aperture: this.CurrentSelectHole.aperture,
+      pitch: this.CurrentSelectHole.pitch,
+      inWallThickness: this.CurrentSelectHole.inWallThickness,
+      openHoleRatio: this.CurrentSelectHole.openHoleRatio,
+      specificSurfaceArea: this.CurrentSelectHole.specificSurfaceArea,
+      unitWeight: this.unitWeight,
+      unitFaceArea: this.unitFaceArea,
+      unitM3: this.unitM3,
+      catalyzerSectionSize1: this.catalyzerSectionSize1,
+      catalyzerSectionSize2: this.catalyzerSectionSize2,
+      moduleInCHJNumber: this.moduleInCHJNumber,
+      moduleInCHJM3: this.moduleInCHJM3,
+      moduleInCHJFaceArea: this.moduleInCHJFaceArea,
+      moduleInCHJWeight: this.moduleInCHJWeight,
+      totalModuleWeight: this.totalModuleWeight,
       preReactorLayer: this.preReactorLayer,
-      preReactorWare: this.preReactorWare,
-      cataLyzerModulesize1: this.catalyzerModuleSize1,
+      singleCatalyzerModuleNum: this.singleCatalyzerModuleNum,
       singleSetMethod1: this.singleSetMethod1,
       singleSetMethod2: this.singleSetMethod2,
-      singleReactorSize1: this.singleReactorSize1,
-      singleReactorSize2: this.singleReactorSize2
+      catalyzerM3: this.catalyzerM3,
+      totalCHJArea: this.totalCHJArea,
+      totalCHJWeightByNet: this.totalCHJWeightByNet,
+      totalCHJWeight: this.totalCHJWeight,
+      // 反应器截面尺寸
+      // 反应仓数量
+      realCatalyzerHoleFlow: this.realCatalyzerHoleFlow,
+      catalyzerEmptySpeed: this.catalyzerEmptySpeed,
+      catalyzerSectionSpeed: this.catalyzerSectionSpeed,
+      //理论喷氨量(单台反应器）
+      catalyzerDenitrationRatio: this.catalyzerDenitrationRatio,
+      singleCatalyzerPa: this.singleCatalyzerPa,
     }
     await smokeParamApi.generateWordFile(params);
     window.open(`${location.origin}/word/download`, '_self');
